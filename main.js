@@ -1,54 +1,56 @@
+"use strict";
+
 document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM fully loaded and parsed");
 
     // TRUE IF WE ARE IN PLAYING MODE
-    let playing = true;
+    var playing = true;
     // INITIAL STATE
-    let initial = true;
+    var initial = true;
     // Percentage of BOMBS in playground
-    let percentageOfBoms = 15;
+    var percentageOfBoms = 15;
     // NUMBER OF BOMBS
-    let totalNumberOfBombs = 0;
-    let numberOfBombs = 0;
+    var totalNumberOfBombs = 0;
+    var numberOfBombs = 0;
     // GAME OVER - BOOL
-    let gameOver = false;
+    var gameOver = false;
     // function for timing
-    let timeInterval;
-    let sec = 0;
-    let min = 0;
-    let minutesElement = document.getElementById("minutes");
-    let secondsElement = document.getElementById("seconds");
+    var timeInterval = void 0;
+    var sec = 0;
+    var min = 0;
+    var minutesElement = document.getElementById("minutes");
+    var secondsElement = document.getElementById("seconds");
 
-    let availableWidth = window.innerWidth;
-    let availableHeight = window.innerHeight;
-    let mainContainer = document.getElementById("main-container");
-    let playground = document.getElementById("playground");
-    let sizeOfCell = 25;
-    let numberOfColumns = 10;
-    let numberOfRows = 10;
-    let optionButton = document.getElementById("optionButton");
-    let bombsNumber = document.getElementById("bombsNumber");
-    let mainHeading = document.getElementById("mainHeading");
+    var availableWidth = window.innerWidth;
+    var availableHeight = window.innerHeight;
+    var mainContainer = document.getElementById("main-container");
+    var playground = document.getElementById("playground");
+    var sizeOfCell = 25;
+    var numberOfColumns = 10;
+    var numberOfRows = 10;
+    var optionButton = document.getElementById("optionButton");
+    var bombsNumber = document.getElementById("bombsNumber");
+    var mainHeading = document.getElementById("mainHeading");
     // WINNING CONDITION
-    let numberOfAllCells = numberOfRows * numberOfColumns;
-    let numberOfClickedCells = 0;
-    let winningState = numberOfAllCells - numberOfBombs;
-    let firstClick = true;
+    var numberOfAllCells = numberOfRows * numberOfColumns;
+    var numberOfClickedCells = 0;
+    var winningState = numberOfAllCells - numberOfBombs;
+    var firstClick = true;
 
     // ELEMENTS of INPUT
-    let rowsInput = document.getElementById("numberOfRowsInput");
-    let columnsInput = document.getElementById("numberOfColumnsInput");
-    let percentageInput = document.getElementById("percentageInput");
-    let autoSwitch = document.getElementById("autoSwitch");
-    let autoCoordinates = true;
-    let newGameButton = document.getElementById("submitBtn");
-    let rowsFromInput = 0;
-    let columnsFromInput = 0;
-    let percentageFromInput = 0;
+    var rowsInput = document.getElementById("numberOfRowsInput");
+    var columnsInput = document.getElementById("numberOfColumnsInput");
+    var percentageInput = document.getElementById("percentageInput");
+    var autoSwitch = document.getElementById("autoSwitch");
+    var autoCoordinates = true;
+    var newGameButton = document.getElementById("submitBtn");
+    var rowsFromInput = 0;
+    var columnsFromInput = 0;
+    var percentageFromInput = 0;
 
     //MODAL
-    let optionModal = document.getElementById("optionModal");
-    let closeModal = document.getElementById("closeModal");
+    var optionModal = document.getElementById("optionModal");
+    var closeModal = document.getElementById("closeModal");
 
     // OPEN MODAL = CLICK OPTION BUTTON
     optionButton.addEventListener("click", function () {
@@ -89,13 +91,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
 
-    rowsInput.addEventListener("change",function(){
+    rowsInput.addEventListener("change", function () {
         rowsFromInput = rowsInput.value;
     });
-    columnsInput.addEventListener("change",function(){
+    columnsInput.addEventListener("change", function () {
         columnsFromInput = columnsInput.value;
     });
-    percentageInput.addEventListener("change",function(){
+    percentageInput.addEventListener("change", function () {
         percentageOfBoms = percentageInput.value;
     });
 
@@ -108,10 +110,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
 
-
     // STARTING NEW GAME WHEN THE PAGE IS LOADED
     setGame();
-
 
     // GAME LOOP
     function setGame() {
@@ -122,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         resetTime();
         updateTime();
     }
-
 
     // SETTING PLAYGROUND - MAINLY CELLS
     function setPlayground() {
@@ -136,23 +135,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
         numberOfClickedCells = 0;
         if (autoCoordinates) {
             // UPDATING THE AVAILABLE WIDTH AND HEIGHT 
-            updateWidthAndHeight(); 
+            updateWidthAndHeight();
             // NUMBER OF COLUMNS for playground
-            numberOfColumns = Math.floor((availableWidth * updateWidthOfContainer()) / sizeOfCell);          
+            numberOfColumns = Math.floor(availableWidth * updateWidthOfContainer() / sizeOfCell);
             // NUMBER OF ROWS for playground
-            numberOfRows = Math.floor(availableHeight / sizeOfCell) - 6;   
-        }else{
+            numberOfRows = Math.floor(availableHeight / sizeOfCell) - 6;
+        } else {
             numberOfRows = rowsFromInput;
             numberOfColumns = columnsFromInput;
             console.log(numberOfRows);
         }
 
         playground.style.width = numberOfColumns * sizeOfCell + "px";
-        playground.style.height = (numberOfRows) * sizeOfCell + "px";
+        playground.style.height = numberOfRows * sizeOfCell + "px";
         // Adjusting of width of main-container
         mainContainer.style.width = numberOfColumns * sizeOfCell + "px";
         numberOfAllCells = numberOfRows * numberOfColumns;
-        
+
         // FILLING PLAYGROUND WITH CELLS
         setCell();
 
@@ -166,18 +165,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // SETTING CELLS in PLAYGROUND
     function setCell() {
-        for (let i = 0; i < numberOfRows; i++) {
-            for (let j = 0; j < numberOfColumns; j++) {
-                let cell = document.createElement("div");
+        for (var i = 0; i < numberOfRows; i++) {
+            for (var j = 0; j < numberOfColumns; j++) {
+                var cell = document.createElement("div");
                 cell.className = "btn";
                 cell.id = i + "," + j;
                 playground.appendChild(cell);
 
                 // RIGHT CLICK EVENT
                 cell.addEventListener("contextmenu", function (e) {
-                    let id = this.id.split(",");
-                    let x = parseInt(id[0]);
-                    let y = parseInt(id[1]);
+                    var id = this.id.split(",");
+                    var x = parseInt(id[0]);
+                    var y = parseInt(id[1]);
 
                     e.preventDefault();
                     if (!clickedArray[x][y]) {
@@ -197,9 +196,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 // LEFT CLICK EVENT
                 cell.addEventListener("click", function () {
-                    let id = this.id.split(",");
-                    let x = parseInt(id[0]);
-                    let y = parseInt(id[1]);
+                    var id = this.id.split(",");
+                    var x = parseInt(id[0]);
+                    var y = parseInt(id[1]);
 
                     if (gameOver) {
                         gameOver = false;
@@ -220,28 +219,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
         // CLEARING FLOAT OF CELLS
-        let clearDiv = document.createElement("div");
+        var clearDiv = document.createElement("div");
         clearDiv.className = "clear";
         playground.appendChild(clearDiv);
     }
 
-
     // FILLING WITH THE BOMB and clickedArray function
     var arrayOfBombs;
     var clickedArray;
-    var arrayOfFlags
+    var arrayOfFlags;
     function fillTheBombs(rows, columns) {
         numberOfBombs = 0;
         arrayOfBombs = new Array(rows);
         clickedArray = new Array(rows);
         arrayOfFlags = new Array(rows);
         // clear the array of bombs
-        for (let i = 0; i < rows; i++) {
+        for (var i = 0; i < rows; i++) {
             arrayOfBombs[i] = new Array(columns);
             clickedArray[i] = new Array(columns);
             arrayOfFlags[i] = new Array(columns);
-            for (let j = 0; j < columns; j++) {
-                let isBomb = randomBomb();
+            for (var j = 0; j < columns; j++) {
+                var isBomb = randomBomb();
                 arrayOfBombs[i][j] = isBomb;
                 if (isBomb) {
                     numberOfBombs++;
@@ -254,16 +252,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         updateNumberOfBombs();
     };
 
-
-
-
     // PRECOMPUTED AMOUNT OF BOMBS
     var amountBombsArray;
     function setAmountBombsArray(rows, columns) {
         amountBombsArray = new Array(rows);
-        for (let i = 0; i < rows; i++) {
+        for (var i = 0; i < rows; i++) {
             amountBombsArray[i] = new Array(columns);
-            for (let j = 0; j < columns; j++) {
+            for (var j = 0; j < columns; j++) {
                 if (arrayOfBombs[i][j]) {
                     amountBombsArray[i][j] = 100;
                 } else {
@@ -274,15 +269,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
 
-
     // GET NUMBERS OF BOMBS AROUND THE CELL
     function getNumberOfBombsAround(x, y) {
-        let varX = parseInt(x);
-        let varY = parseInt(y);
-        let amountOfBombs = 0;
-        for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
-                if ((varX + i) >= 0 && (varX + i) < numberOfRows && (varY + j) >= 0 && (varY + j) < numberOfColumns) {
+        var varX = parseInt(x);
+        var varY = parseInt(y);
+        var amountOfBombs = 0;
+        for (var i = -1; i <= 1; i++) {
+            for (var j = -1; j <= 1; j++) {
+                if (varX + i >= 0 && varX + i < numberOfRows && varY + j >= 0 && varY + j < numberOfColumns) {
                     if (arrayOfBombs[varX + i][varY + j]) {
                         amountOfBombs++;
                     }
@@ -292,10 +286,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return amountOfBombs;
     };
 
-
     // Random function for filling bomb = returning 
     function randomBomb() {
-        let randomNumber = Math.floor(Math.random() * 100);
+        var randomNumber = Math.floor(Math.random() * 100);
         if (randomNumber < percentageOfBoms) {
             return true;
         } else {
@@ -332,15 +325,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         bombsNumber.innerText = numberOfBombs;
     };
 
-
-
     // CLICKING THE CELL IN THE PLAYGROUND
     function clickTheCell(x, y) {
 
-        let varX = parseInt(x);
-        let varY = parseInt(y);
+        var varX = parseInt(x);
+        var varY = parseInt(y);
 
-        let currentCell = document.getElementById(varX + "," + varY);
+        var currentCell = document.getElementById(varX + "," + varY);
 
         if (!gameOver && !clickedArray[varX][varY]) {
             // Setting the cell as CLICKED
@@ -356,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 currentCell.style.background = "url('images/clickedBomb.png')";
                 setGameOver();
             } else {
-                let amountBombsAround = amountBombsArray[varX][varY];
+                var amountBombsAround = amountBombsArray[varX][varY];
                 if (amountBombsAround > 0) {
                     currentCell.innerText = amountBombsAround;
                     // COLOR OF NUMBER
@@ -374,9 +365,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
     };
-
-
-
 
     // COLOR THE NUMBER OF BOMBS IN THE UI
     function colorTheNumber(num) {
@@ -403,21 +391,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
 
-
     // REVEAL ALL CELLS
     function revealAllCells() {
-        let allCells = document.getElementsByClassName("btn");
-        for (let i = 0; i < allCells.length; i++) {
+        var allCells = document.getElementsByClassName("btn");
+        for (var i = 0; i < allCells.length; i++) {
             if (!allCells[i].classList.contains("isClicked")) {
                 allCells[i].className += " isClicked";
-                let coordinates = allCells[i].id.split(",");
-                let varX = parseInt(coordinates[0]);
-                let varY = parseInt(coordinates[1]);
+                var coordinates = allCells[i].id.split(",");
+                var varX = parseInt(coordinates[0]);
+                var varY = parseInt(coordinates[1]);
                 if (!arrayOfFlags[varX][varY]) {
                     if (arrayOfBombs[varX][varY]) {
                         allCells[i].style.background = "url('images/bomb2.png')";
                     } else {
-                        let amountBombsAround = getNumberOfBombsAround(varX, varY);
+                        var amountBombsAround = getNumberOfBombsAround(varX, varY);
                         if (amountBombsAround > 0) {
                             allCells[i].innerText = amountBombsAround;
                             // COLOR OF NUMBER
@@ -431,7 +418,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         }
                     }
                 }
-
             }
         }
     };
@@ -455,20 +441,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function revealCellsAround(x, y) {
-        let varX = parseInt(x);
-        let varY = parseInt(y);
+        var varX = parseInt(x);
+        var varY = parseInt(y);
 
-        for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
+        for (var i = -1; i <= 1; i++) {
+            for (var j = -1; j <= 1; j++) {
                 if (varX + i >= 0 && varX + i < numberOfRows && varY + j >= 0 && varY + j < numberOfColumns && !clickedArray[varX + i][varY + j] && !arrayOfFlags[varX + i][varY + j]) {
                     clickedArray[varX + i][varY + j] = true;
                     numberOfClickedCells++;
 
                     checkWinningCondition();
 
-                    let actualCell = document.getElementById((varX + i) + "," + (varY + j));
+                    var actualCell = document.getElementById(varX + i + "," + (varY + j));
 
-                    let localNumberOfBombs = parseInt(amountBombsArray[varX + i][varY + j]);
+                    var localNumberOfBombs = parseInt(amountBombsArray[varX + i][varY + j]);
                     if (localNumberOfBombs > 0 && localNumberOfBombs < 9) {
                         actualCell.innerText = localNumberOfBombs;
                         actualCell.style.color = colorTheNumber(localNumberOfBombs);
@@ -495,7 +481,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             stopTime();
         }
     }
-
 
     // START TIME
     function startTime() {
@@ -530,6 +515,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
             minutesElement.innerText = min;
         }
     };
-
-
 });
